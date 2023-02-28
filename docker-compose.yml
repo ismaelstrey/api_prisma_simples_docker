@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db-postgres-evento:
+    image: postgres:alpine
+    ports:
+      - ${POST_PORT}:5432
+    container_name: "db-postgres-tiket"
+    restart: always
+    volumes:
+      - ./banco-de-dados-tiket:/var/lib/postgres/data
+    environment:
+      - POSTGRES_USER=${POST_USER}
+      - POSTGRES_PASSWORD=${POST_PASSWORD}
+volumes:
+  banco-de-dados-tiket:
