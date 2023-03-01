@@ -9,12 +9,137 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model User {
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  password String
-  phone String?
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String?
+  password   String
+  phone      String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  empresa    Empresa? @relation(fields: [empresaId], references: [id])
+  empresaId  Int?
+
+  @@map("users")
+}
+
+model Cliente {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  name       String?
+  status     Boolean   @default(true)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  empresa    Empresa[]
+
+  @@map("clientes")
+}
+
+model Empresa {
+  id            Int         @id @default(autoincrement())
+  razao_social  String?
+  nome_fantasia String?
+  ie            String?
+  name          String?
+  clientes      String?
+  tipo          EmpresaType @default(JURIDICA)
+  created_at    DateTime    @default(now())
+  updated_at    DateTime?   @updatedAt
+  user          User[]
+  tecnico       Tecnico[]
+  tiket         Tiket[]
+  cliente       Cliente?    @relation(fields: [clienteId], references: [id])
+  clienteId     Int?
+
+  @@map("empresas")
+}
+
+model Tecnico {
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  type         String?
+  name         String?
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  tecnico_tipo TecnicoTipo[]
+  empresa      Empresa?      @relation(fields: [empresaId], references: [id])
+  empresaId    Int?
+  tiket        Tiket[]
+
+  @@map("tecnicos")
+}
+
+model Tiket {
+  id                 Int           @id @default(autoincrement())
+  problema_informado String?
+  observacao         String?
+  created_at         DateTime      @default(now())
+  updated_at         DateTime      @updatedAt
+  status             TiketStatus[]
+  empresa            Empresa?      @relation(fields: [empresaId], references: [id])
+  empresaId          Int?
+  categoria          Categoria?    @relation(fields: [categoriaId], references: [id])
+  categoriaId        Int?
+  tecnico            Tecnico?      @relation(fields: [tecnicoId], references: [id])
+  prioridade         Prioridade?   @relation(fields: [prioridadeId], references: [id])
+  prioridadeId       Int?
+  tecnicoId          Int?
+
+  @@map("tickets")
+}
+
+model Categoria {
+  id          Int           @id @default(autoincrement())
+  name        String
+  color       String
+  subategoria Subategoria[]
+  iiket       Tiket[]
+
+  @@map("categorias")
+}
+
+model Subategoria {
+  id          Int        @id @default(autoincrement())
+  name        String?
+  color       String?
+  categoria   Categoria? @relation(fields: [categoriaId], references: [id])
+  categoriaId Int?
+
+  @@map("subcategorias")
+}
+
+model Prioridade {
+  id    Int     @id @default(autoincrement())
+  name  String?
+  color String?
+  icon  String?
+  tiket Tiket[]
+
+  @@map("prioridades")
+}
+
+model TiketStatus {
+  id         Int      @id @default(autoincrement())
+  name       String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  tiket      Tiket?   @relation(fields: [tiketId], references: [id])
+  tiketId    Int?
+
+  @@map("tiket_status")
+}
+
+model TecnicoTipo {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  tecnico   Tecnico? @relation(fields: [tecnicoId], references: [id])
+  tecnicoId Int?
+
+  @@map("tecnico_tipo")
+}
+
+enum EmpresaType {
+  FISICA
+  JURIDICA
 }
