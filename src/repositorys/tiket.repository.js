@@ -34,7 +34,8 @@ export const getAll = async () => {
             },
             empresa: {
                 select: {
-                    nome_fantasia: true
+                    nome_fantasia: true,
+                    razao_social: true,
 
                 }
             }

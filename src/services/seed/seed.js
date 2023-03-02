@@ -15,17 +15,18 @@ const Seed = (number) => {
 
     Promise.all(
         [
-            empresaTipoSeed(number),
-            prioridadeSeed(number),
-            userSeed(number),
-            tecnicoTipoSeed(number),
-            tecnicoSeed(number),
-            SubcategiaSeed(number),
-            categoriaSeed(number),
-            tiketStatusSeed(number),
-            empresaSeed(number),
-            ClienteSeed(number),
-            tiketSeed(number)
+            tiketSeed(number),
+            // empresaSeed(number),
+            // empresaTipoSeed(number),
+            // prioridadeSeed(number),
+            // userSeed(number),
+            // tecnicoTipoSeed(number),
+            // tecnicoSeed(number),
+            // SubcategiaSeed(number),
+            // categoriaSeed(number),
+            // tiketStatusSeed(number),
+            // ClienteSeed(number),
+            // tiketSeed(number)
 
         ]
     ).then((values) => console.log(values))

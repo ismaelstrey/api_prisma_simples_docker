@@ -7,11 +7,11 @@ const newFakerTiket = async () => {
         data: {
             problema_informado: faker.company.name(),
             observacao: faker.company.companySuffix(),
-            // empresa: {
-            //     connect: {
-            //         id: Number(faker.random.numeric(1))
-            //     }
-            // },
+            empresa: {
+                connect: {
+                    id: 200
+                }
+            },
             tecnico: {
                 connect: {
                     id: Number(faker.random.numeric(1))
@@ -30,10 +30,10 @@ const newFakerTiket = async () => {
         }
     })
     console.log(data)
-    return data
+    return await data
 }
 const tiketSeed = async (numero) => {
-    await Array.from({ length: numero }).forEach(() => newFakerTiket());
+    await Array.from({ length: numero }).forEach(async () => await newFakerTiket());
 }
 
 export { tiketSeed }

@@ -10,12 +10,12 @@ const newFakerEmpresa = async () => {
             tipo: faker.company.bsNoun(),
             ie: faker.random.numeric(5),
             clientes: faker.random.numeric(5),
-            name: faker.company.bs()
-            // tiket: {
-            //     connect: {
-            //         id: 1
-            //     }
-            // },
+            name: faker.company.bs(),
+            tiket: {
+                connect: {
+                    id: 246
+                }
+            },
             // user: {
             //     connect: {
             //         id: Number(faker.random.numeric(1))
@@ -28,7 +28,7 @@ const newFakerEmpresa = async () => {
             // }
         }
     })
-    // console.log(data)
+    console.log(data)
     return data
 }
 const empresaSeed = async (numero) => {
