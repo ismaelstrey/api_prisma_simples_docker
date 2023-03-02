@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:dev.db"
 }
 
 model User {
@@ -37,19 +37,19 @@ model Cliente {
 }
 
 model Empresa {
-  id            Int         @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   razao_social  String?
   nome_fantasia String?
   ie            String?
   name          String?
   clientes      String?
-  tipo          EmpresaType @default(JURIDICA)
-  created_at    DateTime    @default(now())
-  updated_at    DateTime?   @updatedAt
+  tipo          String
+  created_at    DateTime  @default(now())
+  updated_at    DateTime? @updatedAt
   user          User[]
   tecnico       Tecnico[]
   tiket         Tiket[]
-  cliente       Cliente?    @relation(fields: [clienteId], references: [id])
+  cliente       Cliente?  @relation(fields: [clienteId], references: [id])
   clienteId     Int?
 
   @@map("empresas")
@@ -137,9 +137,4 @@ model TecnicoTipo {
   Tecnico Tecnico[]
 
   @@map("tecnico_tipo")
-}
-
-enum EmpresaType {
-  FISICA
-  JURIDICA
 }
