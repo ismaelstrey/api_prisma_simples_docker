@@ -32,8 +32,10 @@ CREATE TABLE "empresas" (
     "tipo" TEXT NOT NULL,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME,
+    "empresaTipoId" INTEGER,
     "clienteId" INTEGER,
-    CONSTRAINT "empresas_clienteId_fkey" FOREIGN KEY ("clienteId") REFERENCES "clientes" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT "empresas_clienteId_fkey" FOREIGN KEY ("clienteId") REFERENCES "clientes" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "empresas_empresaTipoId_fkey" FOREIGN KEY ("empresaTipoId") REFERENCES "empresa_tipo" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -57,10 +59,12 @@ CREATE TABLE "tickets" (
     "observacao" TEXT,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL,
-    "empresaId" INTEGER,
-    "categoriaId" INTEGER,
     "prioridadeId" INTEGER,
     "tecnicoId" INTEGER,
+    "tiketStatusId" INTEGER,
+    "empresaId" INTEGER,
+    "categoriaId" INTEGER,
+    CONSTRAINT "tickets_tiketStatusId_fkey" FOREIGN KEY ("tiketStatusId") REFERENCES "tiket_status" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "tickets_empresaId_fkey" FOREIGN KEY ("empresaId") REFERENCES "empresas" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "tickets_categoriaId_fkey" FOREIGN KEY ("categoriaId") REFERENCES "categorias" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "tickets_tecnicoId_fkey" FOREIGN KEY ("tecnicoId") REFERENCES "tecnicos" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
@@ -71,16 +75,16 @@ CREATE TABLE "tickets" (
 CREATE TABLE "categorias" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
-    "color" TEXT NOT NULL
+    "color" TEXT NOT NULL,
+    "subcategoriaId" INTEGER,
+    CONSTRAINT "categorias_subcategoriaId_fkey" FOREIGN KEY ("subcategoriaId") REFERENCES "subcategorias" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "subcategorias" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT,
-    "color" TEXT,
-    "categoriaId" INTEGER,
-    CONSTRAINT "subcategorias_categoriaId_fkey" FOREIGN KEY ("categoriaId") REFERENCES "categorias" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    "color" TEXT
 );
 
 -- CreateTable
@@ -96,13 +100,17 @@ CREATE TABLE "tiket_status" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" DATETIME NOT NULL,
-    "tiketId" INTEGER,
-    CONSTRAINT "tiket_status_tiketId_fkey" FOREIGN KEY ("tiketId") REFERENCES "tickets" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    "updated_at" DATETIME NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "tecnico_tipo" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT
+);
+
+-- CreateTable
+CREATE TABLE "empresa_tipo" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT
 );

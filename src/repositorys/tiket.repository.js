@@ -24,7 +24,7 @@ export const getAll = async () => {
             },
             categoria: {
                 include: {
-                    subategoria: {
+                    subcategoria: {
                         select: {
                             name: true,
                             color: true

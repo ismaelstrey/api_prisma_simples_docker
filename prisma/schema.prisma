@@ -37,19 +37,21 @@ model Cliente {
 }
 
 model Empresa {
-  id            Int       @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   razao_social  String?
   nome_fantasia String?
   ie            String?
   name          String?
   clientes      String?
   tipo          String
-  created_at    DateTime  @default(now())
-  updated_at    DateTime? @updatedAt
+  created_at    DateTime     @default(now())
+  updated_at    DateTime?    @updatedAt
   user          User[]
   tecnico       Tecnico[]
   tiket         Tiket[]
-  cliente       Cliente?  @relation(fields: [clienteId], references: [id])
+  cliente       Cliente?     @relation(fields: [clienteId], references: [id])
+  empresa_tipo  EmpresaTipo? @relation(fields: [empresaTipoId], references: [id])
+  empresaTipoId Int?
   clienteId     Int?
 
   @@map("empresas")
@@ -72,40 +74,41 @@ model Tecnico {
 }
 
 model Tiket {
-  id                 Int           @id @default(autoincrement())
+  id                 Int          @id @default(autoincrement())
   problema_informado String?
   observacao         String?
-  created_at         DateTime      @default(now())
-  updated_at         DateTime      @updatedAt
-  status             TiketStatus[]
-  empresa            Empresa?      @relation(fields: [empresaId], references: [id])
-  empresaId          Int?
-  categoria          Categoria?    @relation(fields: [categoriaId], references: [id])
-  categoriaId        Int?
-  tecnico            Tecnico?      @relation(fields: [tecnicoId], references: [id])
-  prioridade         Prioridade?   @relation(fields: [prioridadeId], references: [id])
+  created_at         DateTime     @default(now())
+  updated_at         DateTime     @updatedAt
+  status             TiketStatus? @relation(fields: [tiketStatusId], references: [id])
+  empresa            Empresa?     @relation(fields: [empresaId], references: [id])
+  categoria          Categoria?   @relation(fields: [categoriaId], references: [id])
+  tecnico            Tecnico?     @relation(fields: [tecnicoId], references: [id])
+  prioridade         Prioridade?  @relation(fields: [prioridadeId], references: [id])
   prioridadeId       Int?
   tecnicoId          Int?
+  tiketStatusId      Int?
+  empresaId          Int?
+  categoriaId        Int?
 
   @@map("tickets")
 }
 
 model Categoria {
-  id          Int           @id @default(autoincrement())
-  name        String
-  color       String
-  subategoria Subategoria[]
-  iiket       Tiket[]
+  id             Int           @id @default(autoincrement())
+  name           String
+  color          String
+  subcategoria   Subcategoria? @relation(fields: [subcategoriaId], references: [id])
+  iiket          Tiket[]
+  subcategoriaId Int?
 
   @@map("categorias")
 }
 
-model Subategoria {
-  id          Int        @id @default(autoincrement())
-  name        String?
-  color       String?
-  categoria   Categoria? @relation(fields: [categoriaId], references: [id])
-  categoriaId Int?
+model Subcategoria {
+  id        Int         @id @default(autoincrement())
+  name      String?
+  color     String?
+  categoria Categoria[]
 
   @@map("subcategorias")
 }
@@ -125,8 +128,7 @@ model TiketStatus {
   name       String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  tiket      Tiket?   @relation(fields: [tiketId], references: [id])
-  tiketId    Int?
+  Tiket      Tiket[]
 
   @@map("tiket_status")
 }
@@ -134,7 +136,15 @@ model TiketStatus {
 model TecnicoTipo {
   id      Int       @id @default(autoincrement())
   name    String?
-  Tecnico Tecnico[]
+  tecnico Tecnico[]
 
   @@map("tecnico_tipo")
+}
+
+model EmpresaTipo {
+  id      Int       @id @default(autoincrement())
+  name    String?
+  empresa Empresa[]
+
+  @@map("empresa_tipo")
 }

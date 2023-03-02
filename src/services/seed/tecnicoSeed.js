@@ -1,17 +1,6 @@
 import { prisma } from "../prisma";
 import { faker } from "@faker-js/faker";
 
-export const Recnico = [];
-
-export function createRandomTecnico() {
-    return {
-
-        email: faker.internet.email(),
-        name: faker.internet.userName(),
-        type: faker.internet.userName(),
-        tecnico_tipo: Number(faker.random.numeric())
-    };
-}
 
 const newFakerTecnico = async () => {
     const data = await prisma.tecnico.create({
@@ -21,15 +10,15 @@ const newFakerTecnico = async () => {
             type: faker.internet.userName(),
             tecnico_tipo: {
                 connect: {
-                    id: Number(faker.random.numeric())
+                    id: Number(faker.random.numeric(1))
                 }
             }
         }
     })
-    return data
+    return await data
 }
 const tecnicoSeed = async (numero) => {
-    await Array.from({ length: numero }).forEach(() => newFakerTecnico());
+    await Array.from({ length: numero }).forEach(async () => await newFakerTecnico());
 }
 
 export { tecnicoSeed }

@@ -1,21 +1,23 @@
 import { prisma } from "../prisma";
 import { faker } from "@faker-js/faker";
 
-export const User = [];
-
-export function createRandomUser() {
-    return {
-        name: faker.internet.userName(),
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-        phone: faker.phone.number()
-    };
-}
-
 const newFakerUser = async () => {
     const data = await prisma.user.create({
-        data: createRandomUser()
+        data: {
+            name: faker.internet.userName(),
+            email: faker.internet.email(),
+            password: faker.internet.password(),
+            phone: faker.phone.number()
+            // empresa: {
+            //     connect: {
+            //         id: Number(faker.random.numeric(1))
+            //     }
+            // }
+
+        }
     })
+
+    console.log(data)
     return data
 }
 const userSeed = async (numero) => {

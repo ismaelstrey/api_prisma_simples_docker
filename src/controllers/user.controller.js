@@ -4,7 +4,9 @@ import { createUser, getAll, getById, updateUser } from "../repositorys/user.rep
 import { userValidation } from '../validations/user.validations';
 
 export const create = async (req, res) => {
+    // console.log(req.body)
     try {
+
         await userValidation.validate(req.body)
 
 
