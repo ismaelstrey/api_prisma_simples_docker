@@ -7,10 +7,6 @@ services:
       - ${POST_PORT}:5432
     container_name: "db-postgres-tiket"
     restart: always
-    volumes:
-      - ./banco-de-dados-tiket:/var/lib/postgres/data
     environment:
       - POSTGRES_USER=${POST_USER:-user}
       - POSTGRES_PASSWORD=${POST_PASSWORD:-123456}
-volumes:
-  banco-de-dados-tiket:
