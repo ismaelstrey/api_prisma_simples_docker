@@ -56,16 +56,17 @@ model Empresa {
 }
 
 model Tecnico {
-  id           Int           @id @default(autoincrement())
-  email        String        @unique
-  type         String?
-  name         String?
-  created_at   DateTime      @default(now())
-  updated_at   DateTime      @updatedAt
-  tecnico_tipo TecnicoTipo[]
-  empresa      Empresa?      @relation(fields: [empresaId], references: [id])
-  empresaId    Int?
-  tiket        Tiket[]
+  id            Int          @id @default(autoincrement())
+  email         String       @unique
+  type          String?
+  name          String?
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+  tecnico_tipo  TecnicoTipo? @relation(fields: [tecnicoTipoId], references: [id])
+  empresa       Empresa?     @relation(fields: [empresaId], references: [id])
+  empresaId     Int?
+  tiket         Tiket[]
+  tecnicoTipoId Int?
 
   @@map("tecnicos")
 }
@@ -131,10 +132,9 @@ model TiketStatus {
 }
 
 model TecnicoTipo {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  tecnico   Tecnico? @relation(fields: [tecnicoId], references: [id])
-  tecnicoId Int?
+  id      Int       @id @default(autoincrement())
+  name    String?
+  Tecnico Tecnico[]
 
   @@map("tecnico_tipo")
 }
